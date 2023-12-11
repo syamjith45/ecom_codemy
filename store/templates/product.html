@@ -13,25 +13,57 @@
             </div>
             <div class="col-md-8">
                 <div class="card-body">
-                    <h5 class="card-title text-center">{{ products.name }}</h5>
+                    <h5 class="card-title text-center">{{ products.p_name }}</h5>
                     <p class="card-title text-center">{{products.description}}</p>
+                    <br/> ID: {{products.id}}
                     {% if products.is_sale %}
                     <div class="d-flex justify-content-center small text-warning mb-2">
                         <div class="bi-star-fill"></div>
                         &nbsp;&nbsp;Sale!!&nbsp;&nbsp;
                         <div class="bi-star-fill"></div>
+                        
                     </div>
     
                     <!-- Product price-->
                     <p class="text-center"><strike>₹{{products.price}}</strike>&nbsp;₹{{products.sale_price}}</p>
+                    
                     {% else %}
                     <p class="text-center">₹{{products.price}}</p>
+                    <br/> ID: {{products.id}}
                     {% endif %}
+                    <br/><br/>
+                    <button  type="button" class="btn btn-secondary" value="{{products.id}}" id ="add-cart">Add to cart</button>
                 </div>
             </div>
         </div>
     </div>
     
 </div>
+<script>
 
+$(document).on('click','#add-cart',function(e){
+    e.preventDefault();
+    $.ajax({
+
+        type:'POST',
+        url:'{% url 'cart_add' %}',
+        data: {
+            product_id: $('#add-cart').val(),
+            csrfmiddlewaretoken: '{{  csrf_token }}',
+            action : 'post'
+        },
+        success: function(json){
+                console.log(json)
+        },
+        error: function(xhr, errmsg, err){
+            
+        }
+
+    });
+
+
+})
+
+
+</script>
 {% endblock %}
