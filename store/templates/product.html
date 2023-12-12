@@ -32,7 +32,7 @@
                     <br/> ID: {{products.id}}
                     {% endif %}
                     <br/><br/>
-                    <button  type="button" class="btn btn-secondary" value="{{products.id}}" id ="add-cart">Add to cart</button>
+                    <button  type="submit" class="btn btn-secondary" value="{{products.id}}" id ="add-cart">Add to cart</button>
                 </div>
             </div>
         </div>
@@ -41,7 +41,7 @@
 </div>
 <script>
 
-$(document).on('click','#add-cart',function(e){
+{% comment %} $(document).on('click','#add-cart',function(e){
     e.preventDefault();
     $.ajax({
 
@@ -54,6 +54,7 @@ $(document).on('click','#add-cart',function(e){
         },
         success: function(json){
                 console.log(json)
+                document.getElementById("cart_quantity").textcontent=json.qty;
         },
         error: function(xhr, errmsg, err){
             
@@ -62,8 +63,27 @@ $(document).on('click','#add-cart',function(e){
     });
 
 
-})
+}); {% endcomment %}
 
+$(document).on('click', '#add-cart', function (e) {
+    e.preventDefault();
+    $.ajax({
+        type: 'POST',
+        url: '{% url 'cart_add' %}',
+        data: {
+            product_id: $('#add-cart').val(),
+            csrfmiddlewaretoken: '{{ csrf_token }}',
+            action: 'post'
+        },
+        success: function (json) {
+            console.log(json);
+            document.getElementById("cart_quantity").innerText = json.qty;
+        },
+        error: function (xhr, errmsg, err) {
+            // Handle error if needed
+        }
+    });
+});
 
 </script>
 {% endblock %}
