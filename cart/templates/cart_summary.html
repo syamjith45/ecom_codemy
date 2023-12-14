@@ -4,46 +4,55 @@
     <div class="container px-4 px-lg-5 my-5">
         <div class="text-center text-white">
             <h1 class="display-4 fw-bolder">Shopping Cart</h1>
-            <p class="lead fw-normal text-white-50 mb-0">view your cart </p>
+            <p class="lead fw-normal text-white-50 mb-0">View your cart</p>
         </div>
     </div>
 </header>
 <br/>
 <div class='container'>
-    
-    {% for products in cart_products %}
+    {% for product in cart_products %}
     <div class="card mb-3">
         <div class="row g-0">
             <div class="col-md-4">
-                <img src="{{ products.image.url }}" class="img-fluid rounded-start" alt="...">
+                <img src="{{ product.image.url }}" class="img-fluid rounded-start" alt="...">
             </div>
             <div class="col-md-8">
                 <div class="card-body">
-                    <h5 class="card-title text-center">{{ products.p_name }}</h5>
-                    <p class="card-title text-center">{{products.description}}</p>
-                    <br/> ID: {{products.id}}
-                    {% if products.is_sale %}
+                    <h5 class="card-title text-center">{{ product.p_name }}</h5>
+                    <p class="card-title text-center">{{ product.description }}</p>
+                    <br/> ID: {{ product.id }}
+                    {% if product.is_sale %}
                     <div class="d-flex justify-content-center small text-warning mb-2">
                         <div class="bi-star-fill"></div>
                         &nbsp;&nbsp;Sale!!&nbsp;&nbsp;
                         <div class="bi-star-fill"></div>
-                        
                     </div>
-    
                     <!-- Product price-->
-                    <p class="text-center"><strike>₹{{products.price}}</strike>&nbsp;₹{{products.sale_price}}</p>
-                    
+                    <p class="text-center"><strike>₹{{ product.price }}</strike>&nbsp;₹{{ product.sale_price }}</p>
                     {% else %}
-                    <p class="text-center">₹{{products.price}}</p>
-                    <br/> ID: {{products.id}}
+                    <p class="text-center">₹{{ product.price }}</p>
                     {% endif %}
                     <br/><br/>
-                    <a href={% url 'home' %} calss="btn btn-secondary">Home</a>
+                    <div class="row justify-content-center">
+                        <div class="col-md-2">Quantity:</div>
+                        <div class="col-md-2">
+                            <select class="form-select form-select-sm" id="qty-cart-{{ product.id }}">
+                                {% for key, value in quantities.items %}
+                                    {% if key == product.id|slugify %}
+                                        <option selected>{{ value }}</option>
+                                    {% else %}
+                                        <option value="{{ value }}">{{ value }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <br/><br/>
+                    <a href="{% url 'home' %}" class="btn btn-secondary">Home</a>
                 </div>
             </div>
         </div>
     </div>
-        
     {% endfor %}
 </div>
 <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>

@@ -28,9 +28,20 @@
                     <p class="text-center"><strike>₹{{products.price}}</strike>&nbsp;₹{{products.sale_price}}</p>
                     
                     {% else %}
-                    <p class="text-center">₹{{products.price}}</p>
-                    <br/> ID: {{products.id}}
+                    ₹{{products.price}}
+                    
                     {% endif %}
+                    <br><br>
+                    <div class="row justify-content-center" id="qty-cart">
+                        <div class="col-md-2">Quantity:</div>
+                        <div class="col-md-2">
+                             <select class="form-select" >
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3 </option>
+                            </select>
+                        </div>
+                    </div>
                     <br/><br/>
                     <button  type="submit" class="btn btn-secondary" value="{{products.id}}" id ="add-cart">Add to cart</button>
                 </div>
@@ -72,6 +83,7 @@ $(document).on('click', '#add-cart', function (e) {
         url: '{% url 'cart_add' %}',
         data: {
             product_id: $('#add-cart').val(),
+            product_qty:$('#qty-cart option:selected').text(),
             csrfmiddlewaretoken: '{{ csrf_token }}',
             action: 'post'
         },
