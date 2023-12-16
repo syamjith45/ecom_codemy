@@ -28,6 +28,25 @@ def cart_add(request):
     
     return render(request,"cart_summary.html")
 def cart_delete(request):
-    return render(request,"cart_summary.html")
+	cart = Cart(request)
+	if request.POST.get('action') == 'post':
+		# Get stuff
+		product_id = int(request.POST.get('product_id'))
+		# Call delete Function in Cart
+		cart.delete(product=product_id)
+
+		response = JsonResponse({'product':product_id})
+		#return redirect('cart_summary')
+		return response
 def cart_update(request):
-    return render(request,"cart_summary.html")
+	cart = Cart(request)
+	if request.POST.get('action') == 'post':
+		# Get stuff
+		product_id = int(request.POST.get('product_id'))
+		product_qty = int(request.POST.get('product_qty'))
+
+		cart.update(product=product_id, quantity=product_qty)
+
+		response = JsonResponse({'qty':product_qty})
+		#return redirect('cart_summary')
+		return response
